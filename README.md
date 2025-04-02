@@ -13,3 +13,4 @@ Ich weiss nicht, ob die Datenbank automatisch gefunden bzw. verbunden wurde. Adr
 
 ![](images/04-wordpress_installation.png)
 
+Weiter geht es mit der README unter DevOpsNodeWebApp: [https://github.com/islamgje/DevOpsNodeWebApp](README.md)
