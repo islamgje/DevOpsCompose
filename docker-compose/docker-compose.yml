@@ -1,29 +1,36 @@
-services:
-  db:
-    image: mysql:9.1.0
-    volumes:
-      - mysql-data:/var/lib/mysql
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: 12345
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
+version: '3.8'
 
-  wordpress:
-    depends_on:
-      - db
-    image: wordpress:6.7.0-php8.3
-    ports:
-      - "8082:80"
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: ghost-mysql
     restart: always
-    volumes:
-      - wordpress-data:/var/www/html
     environment:
-      WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      WORDPRESS_DB_NAME: wordpress
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ghost
+      MYSQL_USER: ghost
+      MYSQL_PASSWORD: ghost
+    volumes:
+      - ghost-mysql-data:/var/lib/mysql
+
+  ghost:
+    image: ghost:5
+    container_name: ghost-blog
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - "2368:2368"
+    environment:
+      url: http://localhost:2368
+      database__client: mysql
+      database__connection__host: mysql
+      database__connection__user: ghost
+      database__connection__password: ghost
+      database__connection__database: ghost
+    volumes:
+      - ghost-content:/var/lib/ghost/content
+
 volumes:
-  mysql-data: {}
-  wordpress-data: {}
+  ghost-mysql-data:
+  ghost-content:
